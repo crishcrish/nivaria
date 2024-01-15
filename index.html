@@ -8,7 +8,7 @@
         /* Estilo para la caja de texto */
         #textoOriginal {
             width: 80%; /* Ajusta el ancho según tus necesidades */
-            height: 180px; /* Ajusta la altura según tus necesidades */
+            height: 60px; /* Ajusta la altura según tus necesidades */
             font-size: 16px; /* Ajusta el tamaño de fuente según tus necesidades */
         }
 
@@ -91,7 +91,7 @@
                         } else {
                             // Verificar si la palabra comienza con vocal
                             var primeraLetra = palabraOriginal.charAt(0).toLowerCase();
-                            var esVocal = 'aeiouh'.indexOf(primeraLetra) !== -1;
+                            var esVocal = 'aeiou'.indexOf(primeraLetra) !== -1;
 
                             // Aplicar la traducción según la regla
                             if (esVocal) {
