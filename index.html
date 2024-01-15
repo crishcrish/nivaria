@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traductor Nivari</title>
+</head>
+<body>
+    <h1>Nivaria</h1>
+    <h2>Este es el traductor al nivari</h2>
+
+    <label for="textoOriginal">Texto a Traducir:</label>
+    <input type="text" id="textoOriginal" placeholder="Escribe tu texto aquí">
+
+    <button onclick="traducir()">Traducir</button>
+
+    <label for="textoTraducido">Traducción:</label>
+    <div id="textoTraducido"></div>
+
+    <script>
+        // Variable global para almacenar la lista de verbos
+        var listaDeVerbos;
+
+        // Llamada para cargar la lista de verbos utilizando una petición AJAX
+        cargarListaDeVerbos();
+
+        function cargarListaDeVerbos() {
+            fetch('verbos.txt')
+                .then(response => response.text())
+                .then(data => {
+                    // Divide el contenido del archivo por líneas
+                    listaDeVerbos = data.split('\n').map(verbo => verbo.trim()).filter(verbo => verbo !== '');
+                })
+                .catch(error => console.error('Error al cargar la lista de verbos:', error));
+        }
+
+        function traducir() {
+            var textoOriginal = document.getElementById('textoOriginal').value;
+            var palabras = textoOriginal.split(' ');
+            var textoTraducido = '';
+
+            // Procesar cada palabra
+            for (var i = 0; i < palabras.length; i++) {
+                var palabraOriginal = palabras[i];
+                var palabraTraducida = '';
+
+                if (palabraOriginal.length > 0) {
+                    // Verificar si la palabra es un verbo de la lista
+                    var esVerbo = listaDeVerbos.includes(palabraOriginal.toLowerCase());
+
+                    // Aplicar la traducción según la regla
+                    if (esVerbo) {
+                        // Agregar "zek" y eliminar la primera letra
+                        palabraTraducida = 'zek' + palabraOriginal.substring(1);
+                    } else {
+                        // Verificar si la palabra comienza con vocal
+                        var primeraLetra = palabraOriginal.charAt(0).toLowerCase();
+                        var esVocal = 'aeiou'.indexOf(primeraLetra) !== -1;
+
+                        // Aplicar la traducción según la regla
+                        if (esVocal) {
+                            palabraTraducida = 'tr' + palabraOriginal;
+                        } else {
+                            palabraTraducida = 'ol' + palabraOriginal;
+                        }
+                    }
+                }
+
+                // Agregar la palabra traducida al resultado final
+                textoTraducido += palabraTraducida + ' ';
+            }
+
+            // Mostrar la traducción
+            document.getElementById('textoTraducido').innerText = textoTraducido.trim();
+        }
+    </script>
+</body>
+</html>
