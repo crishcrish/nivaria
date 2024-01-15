@@ -1,25 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traductor Nivari</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Traductor Nivari</title>
+        <style>
+            /* Estilo para la caja de texto */
+            #textoOriginal {
+                width: 30%; /* Ajusta el ancho según tus necesidades */
+                height: 180px; /* Ajusta la altura según tus necesidades */
+                font-size: 16px; /* Ajusta el tamaño de fuente según tus necesidades */
+            }
+    
+            /* Otros estilos (puedes personalizar según tu diseño) */
+            body {
+                font-family: Arial, sans-serif;
+            }
+    
+            button {
+                font-size: 16px;
+                cursor: pointer;
+            }
+    
+            #textoTraducido {
+                margin-top: 10px;
+                font-size: 18px;
+            }
+        </style>
+    </head>
 <body>
     <h1>Nivaria</h1>
     <h2>Este es el traductor al nivari</h2>
 
     <label for="textoOriginal">Texto a Traducir:</label>
+    <div id="textoTraducir">Aquí va tu texto original</div>
+
+    <!-- Caja de texto con ID "textoOriginal" -->
     <input type="text" id="textoOriginal" placeholder="Escribe tu texto aquí">
 
+    <!-- Botón de Traducir -->
     <button onclick="traducir()">Traducir</button>
 
-    <label for="textoTraducido">Traducción:</label>
+    <!-- Resultado de la Traducción -->
+    <label for="textoTraducido">Resultado:</label>
     <div id="textoTraducido"></div>
 
     <script>
         // Variable global para almacenar la lista de verbos
         var listaDeVerbos;
+        var reglasDeTraduccion = {
+            'a': 'Yo',
+            '@': 'el',
+            'ae': 'Ella',
+            '@’': 'Ellos',
+            'ae’': 'Ellas',
+            'a’': 'Nosotros',
+            'af': 'Tu / Usted',
+            'af’': 'Ustedes'
+        };
 
         // Llamada para cargar la lista de verbos utilizando una petición AJAX
         cargarListaDeVerbos();
@@ -45,6 +83,12 @@
                 var palabraTraducida = '';
 
                 if (palabraOriginal.length > 0) {
+                    // Verificar si la palabra está en la lista de reglas de traducción
+                    if (reglasDeTraduccion.hasOwnProperty(palabraOriginal)) {
+                        palabraTraducida = reglasDeTraduccion[palabraOriginal];
+                    } else {
+
+                if (palabraOriginal.length > 0) {
                     // Verificar si la palabra es un verbo de la lista
                     var esVerbo = listaDeVerbos.includes(palabraOriginal.toLowerCase());
 
@@ -53,6 +97,7 @@
                         // Agregar "zek" y eliminar la primera letra
                         palabraTraducida = 'zek' + palabraOriginal.substring(1);
                     } else {
+                        
                         // Verificar si la palabra comienza con vocal
                         var primeraLetra = palabraOriginal.charAt(0).toLowerCase();
                         var esVocal = 'aeiou'.indexOf(primeraLetra) !== -1;
@@ -73,6 +118,8 @@
             // Mostrar la traducción
             document.getElementById('textoTraducido').innerText = textoTraducido.trim();
         }
+    }
+}
     </script>
 </body>
 </html>
