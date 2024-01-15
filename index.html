@@ -59,10 +59,19 @@
             'af': 'Tu / Usted',
             'af’': 'Ustedes'
         };
+        
+        cargarListaDeVerbos();
 
-        // Lista de verbos
-        var listaDeVerbos = [
-            // Agrega aquí tus verbos
+        function cargarListaDeVerbos() {
+            fetch('verbos.txt')
+                .then(response => response.text())
+                .then(data => {
+                    // Divide el contenido del archivo por líneas
+                    listaDeVerbos = data.split('\n').map(verbo => verbo.trim()).filter(verbo => verbo !== '');
+                })
+                .catch(error => console.error('Error al cargar la lista de verbos:', error));
+        }
+
         ];
 
         // Función para traducir
