@@ -73,53 +73,50 @@
         }
 
         function traducir() {
-            var textoOriginal = document.getElementById('textoOriginal').value;
-            var palabras = textoOriginal.split(' ');
-            var textoTraducido = '';
+    var textoOriginal = document.getElementById('textoOriginal').value;
+    var palabras = textoOriginal.split(' ');
+    var textoTraducido = '';
 
-            // Procesar cada palabra
-            for (var i = 0; i < palabras.length; i++) {
-                var palabraOriginal = palabras[i];
-                var palabraTraducida = '';
+    // Procesar cada palabra
+    for (var i = 0; i < palabras.length; i++) {
+        var palabraOriginal = palabras[i];
+        var palabraTraducida = '';
 
-                if (palabraOriginal.length > 0) {
-                    // Verificar si la palabra está en la lista de reglas de traducción
-                    if (reglasDeTraduccion.hasOwnProperty(palabraOriginal)) {
-                        palabraTraducida = reglasDeTraduccion[palabraOriginal];
-                    } else {
+        if (palabraOriginal.length > 0) {
+            // Verificar si la palabra está en la lista de reglas de traducción
+            if (reglasDeTraduccion.hasOwnProperty(palabraOriginal)) {
+                palabraTraducida = reglasDeTraduccion[palabraOriginal];
+            } else {
+                // Verificar si la palabra es un verbo de la lista
+                var esVerbo = listaDeVerbos.includes(palabraOriginal.toLowerCase());
 
-                if (palabraOriginal.length > 0) {
-                    // Verificar si la palabra es un verbo de la lista
-                    var esVerbo = listaDeVerbos.includes(palabraOriginal.toLowerCase());
+                // Aplicar la traducción según la regla
+                if (esVerbo) {
+                    // Agregar "zek" y eliminar la primera letra
+                    palabraTraducida = 'zek' + palabraOriginal.substring(1);
+                } else {
+                    // Verificar si la palabra comienza con vocal
+                    var primeraLetra = palabraOriginal.charAt(0).toLowerCase();
+                    var esVocal = 'aeiou'.indexOf(primeraLetra) !== -1;
 
                     // Aplicar la traducción según la regla
-                    if (esVerbo) {
-                        // Agregar "zek" y eliminar la primera letra
-                        palabraTraducida = 'zek' + palabraOriginal.substring(1);
+                    if (esVocal) {
+                        palabraTraducida = 'tr' + palabraOriginal;
                     } else {
-                        
-                        // Verificar si la palabra comienza con vocal
-                        var primeraLetra = palabraOriginal.charAt(0).toLowerCase();
-                        var esVocal = 'aeiou'.indexOf(primeraLetra) !== -1;
-
-                        // Aplicar la traducción según la regla
-                        if (esVocal) {
-                            palabraTraducida = 'tr' + palabraOriginal;
-                        } else {
-                            palabraTraducida = 'ol' + palabraOriginal;
-                        }
+                        palabraTraducida = 'ol' + palabraOriginal;
                     }
                 }
-
-                // Agregar la palabra traducida al resultado final
-                textoTraducido += palabraTraducida + ' ';
             }
-
-            // Mostrar la traducción
-            document.getElementById('textoTraducido').innerText = textoTraducido.trim();
         }
+
+        // Agregar la palabra traducida al resultado final
+        textoTraducido += palabraTraducida + ' ';
     }
+
+    // Mostrar la traducción
+    document.getElementById('textoTraducido').innerText = textoTraducido.trim();
 }
+
     </script>
 </body>
 </html>
