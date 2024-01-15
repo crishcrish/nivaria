@@ -1,0 +1,382 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traductor Nivari</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, button, #textoTraducido {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input {
+            height: 100px; /* Ajustado según tu preferencia original */
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #textoTraducido {
+            height: 100px; /* Ajustado según tu preferencia original */
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        #reloj {
+            font-size: 2em;
+            margin-top: 20px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        #olpuntillas {
+    position: fixed;
+    top: 70px; /* Ajusta la distancia desde la parte superior según sea necesario */
+    right: 20px;
+    color: #333; /* Puedes ajustar el color según tus preferencias */
+}
+
+#troficial {
+    position: fixed;
+    bottom: 20px; /* Ajusta la distancia desde la parte inferior según sea necesario */
+    left: 20px;
+    color: #888; /* Color gris para el texto */
+}
+
+#patrocinio {
+    position: fixed;
+    bottom: 10px; /* Ajusta la distancia desde la parte inferior según sea necesario */
+    right: 20px;
+    text-align: right;
+    color: #888;
+}
+
+#patrocinio p,
+#patrocinio a {
+    margin: 5px 0; /* Ajusta el margen vertical según sea necesario */
+}
+
+#patrocinio a {
+    color: #FF5733; /* Color llamativo para el enlace */
+    text-decoration: none; /* Elimina el subrayado predeterminado de los enlaces */
+}
+
+#patrocinio a:hover {
+    text-decoration: underline; /* Agrega subrayado al pasar el mouse sobre el enlace */
+}
+
+    </style>
+</head>
+<body>
+    <h1>Nivaria</h1>
+    <h2>Treste canar @ oltraductor oldel Español tral Nivari</h2>
+
+    <label for="textoOriginal">Español:</label>
+    <input type="text" id="textoOriginal" placeholder="Escribe tu texto aquí">
+
+    <button onclick="traducir()">Traducir</button>
+
+    <label for="textoTraducido">Nivari:</label>
+    <div id="textoTraducido"></div>
+
+    <div id="reloj"></div>
+    <div id="olpuntillas">Olpuntillas</div>
+    <div id="troficial">Troficial Mirakadémia Nivariana</div>
+    <div id="patrocinio">
+        <p>Olpatrocinada por</p>
+        <a href="https://www.tiktok.com/@ranpodazaithailandrj05" style="color: #FF5733;">ranpodazaithailandrj05</a>
+    </div>
+
+    <script>
+        
+        function actualizarReloj() {
+            var fecha = new Date();
+
+            // Obtener horas y minutos
+            var horas = fecha.getHours();
+            var minutos = fecha.getMinutes();
+
+            // Ajustar las horas según las particularidades de Nivaria
+            horas = horas > 24 ? horas % 24 : horas;
+
+            // Ajustar los minutos según la regla de tres
+            minutos = Math.floor((minutos * 100) / 60);
+
+            // Formatear la hora para mostrarla
+            var horaFormateada = (horas < 10 ? '0' : '') + horas;
+            var minutosFormateados = (minutos < 10 ? '0' : '') + minutos;
+
+            // Mostrar la hora en el formato deseado
+            document.getElementById('reloj').innerText = horaFormateada + ':' + minutosFormateados;
+
+            // Actualizar cada segundo
+            setTimeout(actualizarReloj, 1000);
+        }
+
+        // Llamar a la función para iniciar el reloj
+        actualizarReloj();
+
+        // Variable global para almacenar la lista de verbos
+        var listaDeVerbos;
+
+        // Llamada para cargar la lista de verbos utilizando una petición AJAX
+        cargarListaDeVerbos();
+
+        function cargarListaDeVerbos() {
+            fetch('verbos.txt')
+                .then(response => response.text())
+                .then(data => {
+                    // Divide el contenido del archivo por líneas
+                    listaDeVerbos = data.split('\n').map(verbo => verbo.trim()).filter(verbo => verbo !== '');
+                })
+                .catch(error => console.error('Error al cargar la lista de verbos:', error));
+        }
+
+        function traducirPronombresYSustantivos(palabra) {
+            // Lista de reglas de traducción para pronombres y sustantivos
+            var reglasDeTraduccion = {
+            
+            'yo': 'a',
+            'ella': 'ae',
+            'el': '@',
+            'ellos': '@’',
+            'ellas': 'ae’',
+            'nosotros': 'a’',
+            'tú': 'af',
+            'usted': 'af',
+            'ustedes': 'af’',
+            'mio': 'da',
+            'suyo': 'd@',
+            'tuyo': 'd@',
+            'suyos': 'd@’',
+            'tuyos': 'd@’',
+            'suya': 'dae',
+            'tuya': 'dae',
+            'suyas': 'dae’',
+            'tuyas': 'dae’',
+            'nuestro': 'da’',
+            'tu': 'daf',
+            'su': 'daf',
+            'tus': 'daf’',
+            'sus': 'daf’',
+            'mi': 'aπ',
+            'le': '@π',
+            'la': 'aeπ',
+            'nos': 'a’π',
+            'los': '@’π',
+            'las': 'ae’π',
+            'como': '⌂a',
+            'no': '⌂e',
+            'y': 'π',
+            'amor': 'leshi',
+            'nación': 'Nivaré',
+            'nacion': 'Nivaré',
+            'naciones': 'Nivarés',
+                    //Canon
+            'estar': 'canon',
+            'ser': 'canon',
+            'estoy': 'canon',
+            'soy': 'canon',
+            'estas': 'canar',
+            'esta': 'canar',
+            'es': 'canar',
+            'estan': 'canarlar',
+            'estamos': 'canarlar',
+            'son': 'canarlar',
+            'somos': 'canarlar',
+            'estaba': 'canona’',
+            'era': 'canona’',
+            'estabas': 'canara’',
+            'eras': 'canara’',
+            'eran': 'canarlara’',
+            'eramos': 'canarlara’',
+            'estabamos': 'canarlara’',
+            'estuvimos': 'canarlara’',
+            'estaban': 'canarlara’',
+            'estare': 'canone’',
+            'sere': 'canone’',
+            'estara': 'canare’',
+            'sera': 'canare’',
+            'estaras': 'canare’',
+            'seras': 'canare’',
+            'estaran': 'canarlare’',
+            'seran': 'canarlare’',
+            'estaremos': 'canarlare’',
+            'seremos': 'canarlare’',
+            
+
+
+            //
+            'español': 'Español',
+            'académia': 'Mirakadémia',
+            'Nivaria': 'Nivaria',
+            'nivaria': 'Nivaria',
+            'ranpodazaithailandrj05': 'Ranpodazaithailandrj05',
+            'nivariana': 'Nivariana',
+            'nivari': 'Nivari',
+            'Nivari': 'Nivari',
+            'mamá': 'Oink',
+            'mamás': 'Oink’',
+            'mami': 'Oink Oink',
+            'mamis': 'Oink Oink’',
+            'papá': 'Chin',
+            'papás': 'Chin’',
+            'papi': 'Chin Chin',
+            'papis': 'Chin Chin’',
+            'cerdo': 'oink',
+            'cerdos': 'oink’',
+            'salchipapa': 'Salchipapa',
+            'salchipapas': 'Salchipapa’',
+            'marica': 'undecameta',
+            'malparido': 'undecaeta',
+            'hoy': 'naroy',
+            'ayer': 'naryer',
+            'mañana': 'nara⌂ana',
+            'futuro': 'naruturo',
+            'pasado': 'narasado',
+            'primero': 'dormeta',
+            'segundo': 'doreta',
+            'tercero': 'dorpropa',
+            'cuarto': 'dorbuta',
+            'quinto': 'dorpenta',
+            'sexto': 'dorhexa',
+            'septimo': 'dorhepta',
+            'octavo': 'dorhecta',
+            'noveno': 'dornona',
+            'decimo': 'dordeca',
+            'undecimo': 'dorundeca',
+            'colegio': 'mirolegio',
+            'materias': 'miraterias',
+            'universidad': 'mirniversidad',
+            'sabiduria': 'mirabiduria',
+            'educación': 'mireducacion',
+            'conocimiento': 'mironocimiento',
+            'esto': 'i',
+            'eso': 'I',
+            'estos': 'i’',
+            'esos': 'I’',
+
+            
+                // Agrega más reglas según sea necesario
+            };
+
+            
+            return reglasDeTraduccion[palabra.toLowerCase()] || '';
+        }
+
+        function traducir() {
+            var textoOriginal = document.getElementById('textoOriginal').value;
+            var palabras = textoOriginal.split(' ');
+            var textoTraducido = '';
+
+            // Procesar cada palabra
+            for (var i = 0; i < palabras.length; i++) {
+                var palabraOriginal = palabras[i];
+                var palabraTraducida = '';
+
+                if (palabraOriginal.length > 0) {
+
+                    var palabraLowerCase = palabraOriginal.toLowerCase();
+
+                    palabraOriginal = palabraOriginal.replace(/ñ/g, '⌂');
+
+
+                    // Verificar la traducción de pronombres y sustantivos
+                    palabraTraducida = traducirPronombresYSustantivos(palabraOriginal);
+
+                    if (palabraOriginal.charAt(0).toLowerCase() === 'h') {
+                        // Eliminar 'h' y agregar el prefijo 'tr-'
+                        palabraTraducida = 'tr' + palabraOriginal.substring(1);
+
+                    } else if (!isNaN(palabraOriginal)) {
+                        // Traducir números
+                        palabraTraducida = palabraOriginal === '10' ? 'deca' : traducirNumeros(palabraOriginal);
+
+                    } else {
+
+                    if (!palabraTraducida) {
+                        // Verificar si la palabra es un verbo de la lista
+                        var esVerbo = listaDeVerbos.includes(palabraOriginal.toLowerCase());
+
+                        // Aplicar la traducción según la regla
+                        if (esVerbo) {
+                            // Agregar "zek" y eliminar la primera letra
+                            palabraTraducida = 'zek' + palabraOriginal.substring(1);
+                        } else {
+                            // Verificar si la palabra comienza con vocal
+                            var primeraLetra = palabraOriginal.charAt(0).toLowerCase();
+                            var esVocal = 'aeiou'.indexOf(primeraLetra) !== -1;
+
+                            // Aplicar la traducción según la regla
+                            if (esVocal) {
+                                palabraTraducida = 'tr' + palabraOriginal;
+                            } else {
+                                palabraTraducida = 'ol' + palabraOriginal;
+                            }
+                        }
+                    }
+                }
+            }
+                // Agregar la palabra traducida al resultado final
+                textoTraducido += palabraTraducida + ' ';
+            }
+
+            // Mostrar la traducción
+            document.getElementById('textoTraducido').innerText = textoTraducido.trim();
+        }
+
+        function traducirNumeros(palabra) {
+            // Traducción de números consecutivos
+            var traducciones = {
+                '1': 'meta',
+                '2': 'eta',
+                '3': 'propa',
+                '4': 'buta',
+                '5': 'penta',
+                '6': 'hecta',
+                '7': 'hepta',
+                '8': 'octa',
+                '9': 'nona',
+                '11': 'undeca'
+            };
+
+            // Convertir números consecutivos, por ejemplo, '12' a 'metaeta'
+            var resultado = '';
+            for (var i = 0; i < palabra.length; i++) {
+                var cifra = palabra.charAt(i);
+                resultado += traducciones[cifra] || cifra;
+            }
+
+            return resultado;
+        }
+
+</script>
+</body>
+</html>
