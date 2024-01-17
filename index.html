@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Traductor Nivari</title>
+    <link rel="icon" href="nivaria.ico">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,12 +47,26 @@
             background-color: #b73b3b;
         }
 
+        #contenedorBotonBandera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 5px; /* Puedes ajustar según sea necesario */
+        }
+
         #textoTraducido {
             height: 100px; /* Ajustado según tu preferencia original */
             border: 1px solid #ccc;
             background-color: #fff;
             padding: 10px;
             overflow-y: auto;
+        }
+
+        #banderaNivaria {
+            max-width: 8%;
+            margin-top: 10px;
+            left: 20px;
         }
 
         #reloj {
@@ -68,6 +83,13 @@
     right: 20px;
     color: #333; /* Puedes ajustar el color según tus preferencias */
 }
+
+#mensajeCopia {
+            color: green; /* Color del mensaje de copia exitosa */
+            font-weight: bold;
+            margin-top: 5px;
+            text-align: right;
+        }
 
 #troficial {
     position: fixed;
@@ -117,7 +139,17 @@
     <label for="textoTraducido">Nivari:</label>
     <div id="textoTraducido"></div>
     
-    <button id="botonCopiarPegar" onclick="copiarTexto()" style="display: none; margin-top: 5px; margin-left: auto; padding: 5px; width: 80px;">Zekopiar</button>
+
+    <div id="contenedorBotonBandera">
+        <!-- Botón de copiar y pegar -->
+
+        <img id="banderaNivaria" src="nivaria.png" alt="Bandera de Nivaria">
+        <button id="botonCopiarPegar" onclick="copiarTexto()" style="display: none; margin-top: 5px; margin-left: auto; padding: 5px; width: 80px;">Zekopiar</button>
+        
+        <!-- Bandera de Nivaria -->
+
+    </div>
+    <div id="mensajeCopia"></div>
 
     <div id="reloj"></div>
     <div id="olpuntillas">Olpuntillas</div>
@@ -376,20 +408,29 @@
         }
 
         function copiarTexto() {
-        // Seleccionar el texto traducido
-        var textoTraducido = document.getElementById('textoTraducido');
-        var rango = document.createRange();
-        rango.selectNode(textoTraducido);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(rango);
+            var textoTraducido = document.getElementById('textoTraducido').innerText;
 
-        // Copiar el texto seleccionado
-        document.execCommand('copy');
+            // Crear un elemento de textarea para copiar el texto
+            var textarea = document.createElement('textarea');
+            textarea.value = textoTraducido;
 
-        // Desseleccionar el texto
-        window.getSelection().removeAllRanges();
-    }
+            // Agregar el elemento al DOM
+            document.body.appendChild(textarea);
 
+            // Seleccionar y copiar el texto
+            textarea.select();
+            document.execCommand('copy');
+
+            // Eliminar el elemento textarea (ya no es necesario)
+            document.body.removeChild(textarea);
+
+            // Mostrar el mensaje de copia exitosa durante unos segundos
+            var mensajeCopia = document.getElementById('mensajeCopia');
+            mensajeCopia.innerText = 'Oltexto zekopiado!';
+            setTimeout(function() {
+                mensajeCopia.innerText = ''; // Limpiar el mensaje después de unos segundos
+            }, 3000);
+        }
 
         function traducirNumeros(palabra) {
             // Traducción de números consecutivos
@@ -418,4 +459,4 @@
 
 </script>
 </body>
-</html>
+</html> 
