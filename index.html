@@ -10,14 +10,15 @@
             margin: 20px;
         }
 
-h1 {
-    font-size: 3.5em !important;
+        h1 {
+        font-size: 3.5em; /* Ajusta el tamaño de fuente según sea necesario */
+        color: #333;
 }
 
-h2 {
-    font-size: 1.5em !important;
+        h2 {
+        font-size: 1.5em; /* Ajusta el tamaño de fuente según sea necesario */
+        color: #333;
 }
-
 
         label {
             font-weight: bold;
@@ -115,6 +116,8 @@ h2 {
 
     <label for="textoTraducido">Nivari:</label>
     <div id="textoTraducido"></div>
+    
+    <button id="botonCopiarPegar" onclick="copiarTexto()" style="display: none; margin-top: 5px; margin-left: auto; padding: 5px; width: 80px;">Copiar</button>
 
     <div id="reloj"></div>
     <div id="olpuntillas">Olpuntillas</div>
@@ -249,8 +252,6 @@ h2 {
 
 
             //
-            'marihuana': 'kofi',
-            'marihuanero': 'Kofibato',
             'español': 'Español',
             'académia': 'Mirakadémia',
             'Nivaria': 'Nivaria',
@@ -367,7 +368,26 @@ h2 {
 
             // Mostrar la traducción
             document.getElementById('textoTraducido').innerText = textoTraducido.trim();
+
+            // Mostrar el botón de copiar y pegar
+            document.getElementById('botonCopiarPegar').style.display = 'block';
         }
+
+        function copiarTexto() {
+        // Seleccionar el texto traducido
+        var textoTraducido = document.getElementById('textoTraducido');
+        var rango = document.createRange();
+        rango.selectNode(textoTraducido);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(rango);
+
+        // Copiar el texto seleccionado
+        document.execCommand('copy');
+
+        // Desseleccionar el texto
+        window.getSelection().removeAllRanges();
+    }
+
 
         function traducirNumeros(palabra) {
             // Traducción de números consecutivos
