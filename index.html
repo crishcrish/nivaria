@@ -285,8 +285,9 @@
 
 
             //
-                'Cristhian': 'Cristhian',
-                'Nicol': 'Nicol',
+                
+            'Nicol': 'Nicol',
+            'Cristhian': 'Cristhian',
             'marihuana': 'kofi',
             'marihuanero': 'Kofibato',
             'español': 'Español',
@@ -360,6 +361,9 @@
 
                     palabraOriginal = palabraOriginal.replace(/ñ/g, '⌂');
 
+                    // Verificar la traducción de pronombres y sustantivos
+                    palabraTraducida = traducirPronombresYSustantivos(palabraOriginal);
+                    
                     var esPalabraEntreComillas = palabraOriginal.startsWith('"') && palabraOriginal.endsWith('"');
 
                     if (esPalabraEntreComillas) {
@@ -381,8 +385,6 @@
 
 
 
-                    // Verificar la traducción de pronombres y sustantivos
-                    palabraTraducida = traducirPronombresYSustantivos(palabraOriginal);
                     
 
                     if (palabraOriginal.charAt(0).toLowerCase() === 'h') {
@@ -487,7 +489,7 @@
 
         function descargarDiccionario() {
     // URL del diccionario PDF en tu repositorio de GitHub
-    var urlDiccionario = 'https://github.com/crishcrish/nivaria/blob/gh-pages/diccionario_nivari.pdf';
+    var urlDiccionario = 'file:///C:/Users/crist/OneDrive/Escritorio/codigo/diccionario_nivari.pdf';
 
     // Crear un elemento de enlace para descargar el diccionario PDF
     var enlace = document.createElement('a');
