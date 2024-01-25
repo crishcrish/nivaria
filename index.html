@@ -356,6 +356,8 @@
 
                 if (palabraOriginal.length > 0) {
 
+                    palabraOriginal = palabraOriginal.replace(/ñ/g, '⌂');
+
                     var esPalabraEntreComillas = palabraOriginal.startsWith('"') && palabraOriginal.endsWith('"');
 
                     if (esPalabraEntreComillas) {
@@ -370,8 +372,11 @@
                     var primeraLetraMayuscula = palabraOriginal.charAt(0) === palabraOriginal.charAt(0).toUpperCase();
                     
 
-                    if (!esPalabraEntreComillas) {
-                    palabraOriginal = palabraOriginal.replace(/ñ/g, '⌂');
+
+                        
+
+
+
 
 
                     // Verificar la traducción de pronombres y sustantivos
@@ -435,13 +440,11 @@
                 }
                     }
                 
-                }
+                
                     
                 }
-            } else {
-                // La palabra está entre comillas, no se realiza ninguna traducción
-                palabraTraducida = palabraOriginal;
             }
+            
             
                 // Agregar la palabra traducida al resultado final
                 textoTraducido += palabraTraducida + ' ';
@@ -453,6 +456,7 @@
             // Mostrar el botón de copiar y pegar
             document.getElementById('botonCopiarPegar').style.display = 'block';
         }
+    
 
         function copiarTexto() {
             var textoTraducido = document.getElementById('textoTraducido').innerText;
@@ -478,6 +482,28 @@
                 mensajeCopia.innerText = ''; // Limpiar el mensaje después de unos segundos
             }, 3000);
         }
+
+        function descargarDiccionario() {
+    // URL del diccionario PDF en tu repositorio de GitHub
+    var urlDiccionario = 'file:///C:/Users/crist/OneDrive/Escritorio/codigo/diccionario_nivari.pdf';
+
+    // Crear un elemento de enlace para descargar el diccionario PDF
+    var enlace = document.createElement('a');
+    enlace.href = urlDiccionario;
+    enlace.download = 'diccionario_nivari.pdf';
+
+    // Agregar el enlace al DOM y simular un clic
+    document.body.appendChild(enlace);
+    enlace.click();
+
+    // Eliminar el enlace del DOM
+    document.body.removeChild(enlace);
+}
+
+// Asignar la función de descarga al evento de clic de la bandera
+document.getElementById('banderaNivaria').addEventListener('click', descargarDiccionario);
+
+
 
         function traducirNumeros(palabra) {
             // Traducción de números consecutivos
