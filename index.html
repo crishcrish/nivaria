@@ -211,8 +211,7 @@
         function traducirPronombresYSustantivos(palabra) {
             // Lista de reglas de traducción para pronombres y sustantivos
             var reglasDeTraduccion = {
-
-
+            
             'mí': 'a',
             'yo': 'a',
             'ella': 'ae',
@@ -357,18 +356,35 @@
 
                 if (palabraOriginal.length > 0) {
 
-                    var palabraLowerCase = palabraOriginal.toLowerCase();
+                    var esPalabraEntreComillas = palabraOriginal.startsWith('"') && palabraOriginal.endsWith('"');
 
+                    if (esPalabraEntreComillas) {
+                // Mantener la palabra original si está entre comillas
+
+                palabraOriginal = palabraOriginal.substring(1, palabraOriginal.length - 1);
+                palabraTraducida = palabraOriginal;
+
+            } else {
+
+                    var palabraLowerCase = palabraOriginal.toLowerCase();
+                    var primeraLetraMayuscula = palabraOriginal.charAt(0) === palabraOriginal.charAt(0).toUpperCase();
+                    
+
+                    if (!esPalabraEntreComillas) {
                     palabraOriginal = palabraOriginal.replace(/ñ/g, '⌂');
 
 
                     // Verificar la traducción de pronombres y sustantivos
                     palabraTraducida = traducirPronombresYSustantivos(palabraOriginal);
+                    
 
                     if (palabraOriginal.charAt(0).toLowerCase() === 'h') {
                         // Eliminar 'h' y agregar el prefijo 'tr-'
-                        palabraTraducida = 'tr' + palabraOriginal.substring(1);
-
+                        if (primeraLetraMayuscula) {
+                            palabraTraducida = 'Tr' + palabraLowerCase.substring(1);
+                        } else {
+                            palabraTraducida = 'tr' + palabraLowerCase.substring(1);
+                            }
                     } else if (!isNaN(palabraOriginal)) {
                         // Traducir números
                         palabraTraducida = palabraOriginal === '10' ? 'deca' : traducirNumeros(palabraOriginal);
@@ -382,22 +398,51 @@
                         // Aplicar la traducción según la regla
                         if (esVerbo) {
                             // Agregar "zek" y eliminar la primera letra
-                            palabraTraducida = 'zek' + palabraOriginal.substring(1);
+                            if (primeraLetraMayuscula) {
+                            palabraTraducida = 'Zek' + palabraLowerCase.substring(1);
+                        } else {
+                            palabraTraducida = 'zek' + palabraLowerCase.substring(1);
+                            }
+
                         } else {
                             // Verificar si la palabra comienza con vocal
                             var primeraLetra = palabraOriginal.charAt(0).toLowerCase();
                             var esVocal = 'aeiou'.indexOf(primeraLetra) !== -1;
+                    
 
                             // Aplicar la traducción según la regla
                             if (esVocal) {
-                                palabraTraducida = 'tr' + palabraOriginal;
-                            } else {
-                                palabraTraducida = 'ol' + palabraOriginal;
+                                
+                                if (primeraLetraMayuscula) {
+                            palabraTraducida = 'Tr' + palabraLowerCase;
+                        } else {
+                            palabraTraducida = 'tr' + palabraLowerCase;
                             }
+
+
+                            } else {
+                                
+
+                        // Aplicar la traducción según la regla
+                        if (primeraLetraMayuscula) {
+                            palabraTraducida = 'Ol' + palabraLowerCase;
+                        } else {
+                            palabraTraducida = 'ol' + palabraLowerCase;
+                            }
+                            
                         }
                     }
                 }
+                    }
+                
+                }
+                    
+                }
+            } else {
+                // La palabra está entre comillas, no se realiza ninguna traducción
+                palabraTraducida = palabraOriginal;
             }
+            
                 // Agregar la palabra traducida al resultado final
                 textoTraducido += palabraTraducida + ' ';
             }
